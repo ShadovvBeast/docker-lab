@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  app:
+    container_name: docker-lab
+    restart: always
+    build: .
+    ports:
+      - '80:3000'
+    volumes: 
+      - ./var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host"
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+    network_mode: "host"
+  mysql:
+    image: mysql
+    command: echo "MySQL not loaded"  # disables the creation of the container, will only pull the image
+    restart: "no"
+  redis:
+    image: redis
+    command: echo "Redis not loaded"
+    restart: "no"
+  jupyter:
+    image: jupyter/all-spark-notebook
+    command: echo "Jupyter not loaded"
+    restart: "no"
+  
+  

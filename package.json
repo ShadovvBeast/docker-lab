@@ -1,0 +1,24 @@
+{
+  "name": "dockerlab",
+  "version": "0.0.1",
+  "description": "Docker Lab API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "Asaf Levy",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "dockerode": "^2.5.8",
+    "express": "^4.17.1",
+    "is-docker": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
