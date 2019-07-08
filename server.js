@@ -27,7 +27,7 @@ mongoose.connect(conf.mongodb_url, {useNewUrlParser: true}).then(() => {
             (new Lab({canonical_name: 'sql-lesson', docker_image: 'mysql', title: 'SQL Introduction Lab”', docker_port: '3306/tcp', docker_env: ["MYSQL_ROOT_PASSWORD=" + conf.mysql_root_password]})).save();
             (new Lab({canonical_name: 'redis-lesson', docker_image: 'redis', title: 'Introduction to Redis”', docker_port: '6379/tcp'})).save();
             (new Lab({canonical_name: 'jupyter-lesson', docker_image: 'jupyter/all-spark-notebook', docker_port: '8888/tcp'})).save(); // Initialize a user to be used to get the token
-            bcrypt.hash('Nimad123', conf.bcrypt_salt_rounds).then((hash) => (new User({username: 'admin', password: hash})).save());
+            bcrypt.hash(conf.login_password, conf.bcrypt_salt_rounds).then((hash) => (new User({username: conf.login_user, password: hash})).save());
             console.log('DB Initalized');
         }
     });

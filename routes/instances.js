@@ -20,13 +20,16 @@ const verifyToken = (req, res, next) => req.headers['token'] ? jwt.verify(req.he
 
 // @route GET /instances
 // @desc Get all lab instances (running docker containers)
+// @access Private
 router.get('/', verifyToken, (req, res) => {
     docker.listContainers().then(containers => res.json(containers)).catch(err => console.error(err));
 });
 
 let port = conf.docker_base_port;
+
 // @route POST /instances/start
 // @desc Start an instance (create a docker container)
+// @access Private
 router.post('/start', verifyToken, (req, res) => {
     Lab.findOne({canonical_name: req.body.lab_name}).then((lab) => {
         if (lab)
