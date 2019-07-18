@@ -5,9 +5,13 @@ const jwt = require('jsonwebtoken');
 const conf = require('../config');
 const docker = new Docker( conf.docker_host ? {host: conf.docker_host, port: conf.docker_port || 2375} : undefined);
 
+let port = conf.docker_base_port;
 // Initialize Docker
-// Remove all containers
-docker.listContainers({all: true}).then(containers => containers.forEach((containerInfo) => docker.getContainer(containerInfo.Id).remove({force: true})));
+// Get the current max port
+docker.listContainers({all: true}).then(containers => 
+    port = Math.max(Math.max.apply(null, containers.map(containerInfo => 
+        Math.max.apply(null, containerInfo.Ports.map(portInfo => 
+            portInfo.PublicPort || 0)))))+1, port);
 const Lab = require('../models/Lab');
 
 let imageList = [];
@@ -21,9 +25,6 @@ const verifyToken = (req, res, next) => req.headers['token'] ? jwt.verify(req.he
 router.get('/', verifyToken, (req, res) => {
     docker.listContainers().then(containers => res.json(containers)).catch(err => console.error(err));
 });
-
-let port = conf.docker_base_port;
-
 
 // Start an instance
 const startInstance = (lab, PortBindings, res) => {
